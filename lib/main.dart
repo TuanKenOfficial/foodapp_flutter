@@ -2,10 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:foodappbasic/pages/bottomnav.dart';
 import 'package:foodappbasic/pages/onboard.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:foodappbasic/widgets/app_constant.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  Stripe.publishableKey = publishableKey;
+  await Firebase.initializeApp(); // kết nối firebase
   runApp(const MyApp());
 }
 
