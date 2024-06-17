@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:foodappbasic/pages/bottomnav.dart';
 import 'package:foodappbasic/pages/login.dart';
+import 'package:foodappbasic/services/database.dart';
+import 'package:foodappbasic/services/share_preference.dart';
 import 'package:foodappbasic/widgets/widget_support.dart';
+import 'package:random_string/random_string.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -31,9 +34,22 @@ class _SignUpState extends State<SignUp> {
         ScaffoldMessenger.of(context).showSnackBar((SnackBar(
           content: Text("Đăng ký thành công", style: TextStyle(fontSize: 20.0)),
         )));
-
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => BottomNav()));
+        String Id = randomAlphaNumeric(10);
+        Map<String, dynamic> addUserInfo = {
+          "Name": nameController.text,
+          "Email": emailController.text,
+          "Wallet": "0",
+          "Id": Id,
+        };
+        await DatabaseMethods().addUserDetail(addUserInfo, Id);
+        await SharedPreferenceHelper().saveUserName(nameController.text);
+        await SharedPreferenceHelper().saveUserEmail(emailController.text);
+        await SharedPreferenceHelper().saveUserWallet('0');
+        await SharedPreferenceHelper().saveUserId(Id);
+
+        // ignore: use_build_context_synchronously
       } on FirebaseException catch (e) {
         if (e.code == 'weak-password') {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
