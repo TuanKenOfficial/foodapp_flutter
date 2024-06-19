@@ -4,7 +4,12 @@ import 'package:flutter/widgets.dart';
 import 'package:foodappbasic/widgets/widget_support.dart';
 
 class Details extends StatefulWidget {
-  const Details({super.key});
+  String image, name, detail, price;
+  Details(
+      {required this.detail,
+      required this.image,
+      required this.name,
+      required this.price});
 
   @override
   State<Details> createState() => _DetailsState();
@@ -32,9 +37,9 @@ class _DetailsState extends State<Details> {
             Container(
               margin: EdgeInsets.only(top: 10.0, left: 100.0),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(120),
-                child: Image.asset(
-                  "images/salad3.jpg",
+                borderRadius: BorderRadius.circular(80),
+                child: Image.network(
+                  widget.image,
                   width: MediaQuery.of(context).size.width / 2.5,
                   height: MediaQuery.of(context).size.height / 4,
                   fit: BoxFit.fill,
@@ -50,12 +55,8 @@ class _DetailsState extends State<Details> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Salad Đồng Tháp",
+                      widget.name,
                       style: AppWidget.semiBoolTextFeildStyle(),
-                    ),
-                    Text(
-                      "Salad/Rau trộn",
-                      style: AppWidget.boldTextFeildStyle(),
                     ),
                   ],
                 ),
@@ -108,7 +109,7 @@ class _DetailsState extends State<Details> {
               height: 15.0,
             ),
             Text(
-              "Salad/Rau trộn (tiếng Pháp: salade) hay salad, xa lát, xà lách trộn là một loại món ăn có nguồn gốc từ các nước châu Âu, chủ yếu là chế biến từ rau sống và các loại xà lách, mì, cây họ đậu, trứng, thịt, hải sản",
+              widget.detail,
               style: AppWidget.LightTextFeildStyle(),
             ),
             SizedBox(
@@ -148,7 +149,7 @@ class _DetailsState extends State<Details> {
                       style: AppWidget.boldTextFeildStyle(),
                     ),
                     Text(
-                      "\$28",
+                      "\$" + widget.price,
                       style: AppWidget.HeadlineTextFeildStyle(),
                     ),
                   ]),
