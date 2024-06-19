@@ -339,7 +339,7 @@ class _WalletState extends State<Wallet> {
                         controller: amountcontroller,
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'Nhập số tiền bạn muốn dạng USD'),
+                            hintText: 'Nhập số tiền của bạn'),
                       ),
                     ),
                     SizedBox(

@@ -34,8 +34,7 @@ class _SignUpState extends State<SignUp> {
         ScaffoldMessenger.of(context).showSnackBar((SnackBar(
           content: Text("Đăng ký thành công", style: TextStyle(fontSize: 20.0)),
         )));
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => BottomNav()));
+
         String Id = randomAlphaNumeric(10);
         Map<String, dynamic> addUserInfo = {
           "Name": nameController.text,
@@ -50,6 +49,8 @@ class _SignUpState extends State<SignUp> {
         await SharedPreferenceHelper().saveUserId(Id);
 
         // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => LogIn()));
       } on FirebaseException catch (e) {
         if (e.code == 'weak-password') {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(

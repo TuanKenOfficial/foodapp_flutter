@@ -222,6 +222,7 @@ class _HomeState extends State<Home> {
     ));
   }
 
+  // hiện 4 món ăn chủ yếu
   Widget showItem() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
