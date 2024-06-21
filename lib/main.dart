@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:foodappbasic/admin/admin_login.dart';
 import 'package:foodappbasic/admin/home_admin.dart';
 import 'package:foodappbasic/pages/bottomnav.dart';
+import 'package:foodappbasic/pages/login.dart';
 import 'package:foodappbasic/pages/onboard.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:foodappbasic/widgets/app_constant.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: BottomNav());
+        home: LogIn());
   }
 }
 

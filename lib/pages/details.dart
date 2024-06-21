@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:foodappbasic/services/database.dart';
+import 'package:foodappbasic/services/share_preference.dart';
 import 'package:foodappbasic/widgets/widget_support.dart';
 
 class Details extends StatefulWidget {
@@ -16,7 +18,25 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-  int a = 1;
+  int a = 1, total = 0;
+  String? id;
+
+  getthesharedpref() async {
+    id = await SharedPreferenceHelper().getUserId();
+    setState(() {});
+  }
+
+  ontheload() async {
+    await getthesharedpref();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ontheload();
+    total = int.parse(widget.price);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +85,7 @@ class _DetailsState extends State<Details> {
                   onTap: () {
                     if (a > 1) {
                       --a;
+                      total = total - int.parse(widget.price);
                     }
                     setState(() {});
                   },
@@ -91,6 +112,7 @@ class _DetailsState extends State<Details> {
                 GestureDetector(
                   onTap: () {
                     ++a;
+                    total = total + int.parse(widget.price);
                     setState(() {});
                   },
                   child: Container(
@@ -149,44 +171,61 @@ class _DetailsState extends State<Details> {
                       style: AppWidget.boldTextFeildStyle(),
                     ),
                     Text(
-                      "\$" + widget.price,
+                      "\$" + total.toString(),
                       style: AppWidget.HeadlineTextFeildStyle(),
                     ),
                   ]),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 2,
-                    padding: EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          "Thêm vào giỏ hàng",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                            fontFamily: 'Poppins',
+                  GestureDetector(
+                    onTap: () async {
+                      Map<String, dynamic> addFoodtoCart = {
+                        "Name": widget.name,
+                        "Quantity": a.toString(),
+                        "Total": total.toString(),
+                        "Image": widget.image
+                      };
+                      await DatabaseMethods().addFoodToCart(addFoodtoCart, id!);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: Colors.orangeAccent,
+                          content: Text(
+                            "Thực phẩm được thêm vào giỏ hàng",
+                            style: TextStyle(fontSize: 18.0),
+                          )));
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 2,
+                      padding: EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            "Thêm vào giỏ hàng",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                              fontFamily: 'Poppins',
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(1),
-                          decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Icon(
-                            Icons.shopping_cart_outlined,
-                            color: Colors.white,
+                          SizedBox(
+                            width: 10.0,
                           ),
-                        ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                      ],
+                          Container(
+                            padding: EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Icon(
+                              Icons.shopping_cart_outlined,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],
